@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Movie Suggestion</title>
-    <script src="https://unpkg.com/svelte@3.38.2/dist/svelte.min.js"></script>
+    <title>Random Pattern Generator</title>
   </head>
   <body>
-    <h1>Movie Suggestion</h1>
-    <div id="movie-suggestion"></div>
-
+    <canvas id="my-canvas"></canvas>
     <script>
-      const App = {
-        data() {
-          return {
-            movieName: '',
-            suggestedMovie: null
-          };
-        },
-        async suggestMovie() {
-          const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=YOUR_API_KEY&query=${this.movieName}`);
-          const data = await response.json();
-          this.suggestedMovie = data.results[0];
-        }
-      };
+      const canvas = document.getElementById('my-canvas');
+      const ctx = canvas.getContext('2d');
 
-      new svelte.App({
-        target: document.getElementById('movie-suggestion'),
-        component: App
-      });
+      // Set the canvas size to the size of the window
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      // Define an array of colors
+      const colors = ['#FF5733', '#FFC300', '#DAF7A6', '#C70039', '#900C3F'];
+
+      // Define the size of the squares to draw
+      const squareSize = 20;
+
+      // Calculate the number of squares to fit the width and height of the canvas
+      const numColumns = Math.ceil(canvas.width / squareSize);
+      const numRows = Math.ceil(canvas.height / squareSize);
+
+      // Loop through each square and draw a random color
+      for (let i = 0; i < numColumns; i++) {
+        for (let j = 0; j < numRows; j++) {
+          const randomColor = colors[Math.floor(Math.random() * colors.length)];
+          ctx.fillStyle = randomColor;
+          ctx.fillRect(i * squareSize, j * squareSize, squareSize, squareSize);
+        }
+      }
     </script>
   </body>
 </html>
